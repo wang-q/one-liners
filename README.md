@@ -6,7 +6,8 @@ Useful bash one-liners.
 
 - [One-liners](#one-liners)
 - [References:](#references)
-- [Basic bash tools: `cat`, `sort`, `uniq`, `cut`, etc.](#basic-bash-tools-cat-sort-uniq-cut-etc)
+- [Basic bash tools](#basic-bash-tools)
+    - [`cat`, `sort`, `uniq`, `cut`, etc.](#cat-sort-uniq-cut-etc)
 - [Terminal appearances](#terminal-appearances)
     - [使用 Xterm 控制序列改变终端大小](#使用-xterm-控制序列改变终端大小)
 
@@ -17,17 +18,24 @@ Useful bash one-liners.
 * https://github.com/stephenturner/oneliners/
 * http://genomespot.blogspot.com/2013/08/a-selection-of-useful-bash-one-liners.html
 
-# Basic bash tools: `cat`, `sort`, `uniq`, `cut`, etc.
+# Basic bash tools
+
+##  `cat`, `sort`, `uniq`, `cut`, etc.
 
 [[back to top](#one-liners)]
 
 Number each line in file.txt:
 
-    cat -n file.txt
+```bash
+cat -n file.txt
+```
 
 Count the number of unique lines in file.txt
 
-    cat file.txt | sort -u | wc -l
+```bash
+cat file.txt | sort -u | wc -l
+```
+
 # Terminal appearances
 
 
