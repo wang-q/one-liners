@@ -7,6 +7,8 @@ Useful bash one-liners.
 - [One-liners](#one-liners)
 - [References:](#references)
 - [Basic bash tools: `cat`, `sort`, `uniq`, `cut`, etc.](#basic-bash-tools-cat-sort-uniq-cut-etc)
+- [Terminal appearances](#terminal-appearances)
+    - [使用 Xterm 控制序列改变终端大小](#使用-xterm-控制序列改变终端大小)
 
 
 # References:
@@ -26,4 +28,22 @@ Number each line in file.txt:
 Count the number of unique lines in file.txt
 
     cat file.txt | sort -u | wc -l
+# Terminal appearances
+
+
+## 使用 Xterm 控制序列改变终端大小
+
+https://apple.stackexchange.com/a/47841
+
+Set the window to 100x30 characters:
+
+```bash
+printf '\e[8;30;100t'
+```
+
+Move the window to the top/left corner
+
+```bash
+printf '\e[3;0;0t'
+```
 
