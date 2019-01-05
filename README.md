@@ -10,6 +10,9 @@ Useful bash one-liners.
     - [`cat`, `sort`, `uniq`, `cut`, etc.](#cat-sort-uniq-cut-etc)
 - [Terminal appearances](#terminal-appearances)
     - [使用 Xterm 控制序列改变终端大小](#使用-xterm-控制序列改变终端大小)
+- [System Administration](#system-administration)
+    - [找出占用空间最大的目录](#找出占用空间最大的目录)
+    - [Kill all by names](#kill-all-by-names)
 
 
 # References:
@@ -53,5 +56,19 @@ Move the window to the top/left corner
 
 ```bash
 printf '\e[3;0;0t'
+```
+
+# System Administration
+
+## 找出占用空间最大的目录
+
+```bash
+find . -type d -print0 | xargs -0 du -s | sort -n | tail -20 | cut -f2 | xargs -I{} du -sh {}
+```
+
+## Kill all by names
+
+```bash
+BIN_NAME=lastz ps ax | grep "${BIN_NAME}" | cuf -f 1 | xargs kill -9
 ```
 
