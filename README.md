@@ -6,6 +6,8 @@ Useful bash one-liners.
 
 - [One-liners](#one-liners)
 - [References:](#references)
+- [Styles](#styles)
+    - [New lines in Bash](#new-lines-in-bash)
 - [Basic bash tools](#basic-bash-tools)
     - [`cat`, `sort`, `uniq`, `cut`, etc.](#cat-sort-uniq-cut-etc)
 - [Terminal appearances](#terminal-appearances)
@@ -20,6 +22,33 @@ Useful bash one-liners.
 * http://www.commandlinefu.com/
 * https://github.com/stephenturner/oneliners/
 * http://genomespot.blogspot.com/2013/08/a-selection-of-useful-bash-one-liners.html
+
+# Styles
+
+## New lines in Bash
+
+https://unix.stackexchange.com/questions/253518/where-are-bash-line-continuations-after-and-documented
+
+A newline is ignored in a few contexts where there is manifestly an unterminated command. These
+contexts include after a control operator (`&&`, `||`, `|`, `&`, `;`, `;;`, but not `!`). I don't
+see this documented in the bash manual. In POSIX, it's specified via the
+[grammar rules](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_10_02)
+. Wherever the rules have `linebreak`, you can have zero or more line breaks.
+
+Comments in a multi-line bash command
+
+https://superuser.com/questions/238791/comments-in-a-multi-line-bash-command
+
+Put the pipes at the end of line with the comments after it:
+
+```bash
+echo 'foo' |
+    sed 's/f/a/' | # change first f to a 
+    sed 's/o/b/' | # change first o to b 
+    sed 's/o/c/'   # change second o to c abc
+#abc
+
+```
 
 # Basic bash tools
 
