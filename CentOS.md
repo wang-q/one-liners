@@ -10,12 +10,16 @@ For HPCC in NJU
 - [Install Linuxbrew](#install-linuxbrew)
 - [Mirror to remote server](#mirror-to-remote-server)
 
+# Install
 
 ```bash
-usermod -aG wheel wangq
+wget -N https://mirrors.nju.edu.cn/centos-vault/6.10/isos/x86_64/CentOS-6.10-x86_64-minimal.iso
+
 ```
 
-Or use `visudo`.
+Let Parallels use the express installation. Configure the VM as 4 cores and 4GB RAM.
+
+Turn Network Conditioner on and ssh in as `root`.
 
 # Change the Home directory
 
@@ -24,56 +28,69 @@ user's home directory. Adding `-m` (abbreviation for `--move-home` will also mov
 the user's current directory to the new directory.
 
 ```bash
+pkill -KILL -u wangq
+
+# Change the Home directory
 mkdir -p /share/home
 usermod -m -d /share/home/wangq wangq
-```
 
-# Upgrade gcc
-
-```text
-$ cat /etc/centos-release
-CentOS release 6.7 (Final)
-
-$ sudo yum install centos-release-scl
-$ sudo yum install devtoolset-3-toolchain
-$ scl enable devtoolset-3 bash
-
-$ gcc --version
-gcc (GCC) 4.9.2 20150212 (Red Hat 4.9.2-6)
+# Development Tools
+yum groupinstall 'Development Tools'
+yum install curl file git vim
 
 ```
 
-# Install Linuxbrew
+# Install Linuxbrew without sudo
 
-Enable the SCL environment:
+* SSH in as `wangq`
 
 ```bash
-scl enable devtoolset-3 bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+
+# can't sudo
+# Ctrl+D to install linuxbrew to PATH=$HOME/.linuxbrew
+# RETURN to start installation
+
+echo >> ~/.bashrc
+echo '# HOMEBREW' >> ~/.bashrc
+echo 'eval $(/share/home/wangq/.linuxbrew/bin/brew shellenv)' >> ~/.bashrc
+echo 'export HOMEBREW_NO_ANALYTICS=1' >> ~/.bashrc
+echo 'export HOMEBREW_NO_AUTO_UPDATE=1' >> ~/.bashrc
+
+source ~/.bashrc
+
 ```
 
-Install Linuxbrew:
+* Fix git
+
+    https://wiki.vcu.edu/display/unix/Install+Linuxbrew+on+RHEL6+or+Centos6
 
 ```bash
-git clone https://github.com/Linuxbrew/brew.git ~/.linuxbrew
+export HOMEBREW_NO_ENV_FILTERING=1
+
+brew install binutils linux-headers
+brew install glibc --force-bottle
+brew install gcc --force-bottle
+brew install expat --force-bottle
+brew install pcre2 --force-bottle
+brew install openssl
+brew install curl
+brew install gettext --force-bottle
+brew install pkgconfig --force-bottle
+brew install gpatch --force-bottle
+brew install ncurses --build-from-source
+brew install pkg-config --force-bottle
+brew install gettext --force-bottle
+brew install git
+
+unset HOMEBREW_NO_ENV_FILTERING
+brew update
+
+brew vendor-install ruby
+
 ```
 
-Add these to your `.bashrc`, and source it:
-
-```bash
-export PATH="$HOME/.linuxbrew/bin:$PATH"
-export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-```
-
-Create symlinks to your new gcc/g++/gfortran:
-
-```bash
-ln -s $(which gcc) `brew --prefix`/bin/gcc-$(gcc -dumpversion | cut -d. -f1,2)
-ln -s $(which g++) `brew --prefix`/bin/g++-$(g++ -dumpversion | cut -d. -f1,2)
-ln -s $(which gfortran) `brew --prefix`/bin/gfortran-$(gfortran -dumpversion | cut -d. -f1,2)
-```
-
-Test your installation:
+* Test your installation:
 
 ```bash
 brew install hello
@@ -81,19 +98,16 @@ brew test hello
 brew remove hello
 ```
 
-Some packages have building problems, use bottled or from-source versions.
-
-**Don't `brew install git`**
+* ome packages have building problems, use bottled or from-source versions.
 
 ```bash
-brew install --force-bottle gawk
-brew install --force-bottle glib
-brew install --force-bottle fontconfig
-brew install --without-x11 cairo
-brew install r # 3.4.3
-brew install --force-bottle graphviz
-brew install --force-bottle imagemagick
-brew install --force-bottle hdf5
+brew install gawk
+brew install glib
+brew install fontconfig
+brew install cairo
+brew install r
+brew install graphviz
+brew install imagemagick
 
 brew reinstall --build-from-source lua
 
@@ -124,3 +138,9 @@ rsync -avP ~/.bashrc wangq@202.119.37.251:.bashrc
 
 ```
 
+# Sudo
+
+```bash
+usermod -aG wheel wangq
+visudo
+```
